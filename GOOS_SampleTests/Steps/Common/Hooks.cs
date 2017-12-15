@@ -22,7 +22,22 @@ namespace GOOS_SampleTests.Steps.Common
         [BeforeScenario]
         public void BeforeScenario()
         {
-            //TODO: implement logic that has to run before executing each scenario
+            var tags = ScenarioContext.Current.ScenarioInfo.Tags
+                .Where(x => x.StartsWith("Clean"))
+                .Select(x => x.Replace("Clean", ""));
+            if (!tags.Any())
+            {
+                return;
+            }
+            using (var dbcontext = new GOOSEntitiesForTest())
+            {
+                foreach (var tag in tags)
+                {
+                    dbcontext.Database.ExecuteSqlCommand($"TRUNCATE TABLE [{tag}]");
+                }
+                dbcontext.SaveChangesAsync();
+            }
+
         }
 
         [AfterScenario]
