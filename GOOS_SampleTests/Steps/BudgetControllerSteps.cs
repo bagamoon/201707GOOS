@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 
-namespace GOOS_SampleTests
+namespace GOOS_SampleTests.Steps
 {
     [Binding]
     public class BudgetControllerSteps
@@ -18,6 +18,11 @@ namespace GOOS_SampleTests
         public void BeforeScenario()
         {
             this._budgetController = new BudgetController();
+
+            using (var dbcontext = new GOOSEntitiesForTest())
+            {
+                dbcontext.Database.ExecuteSqlCommand("TRUNCATE TABLE [Budgets]");
+            }
         }
 
         [When(@"add a budget")]
