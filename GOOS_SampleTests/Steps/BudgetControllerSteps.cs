@@ -1,6 +1,10 @@
-﻿using FluentAssertions;
+﻿using Autofac;
+using FluentAssertions;
 using GOOS_Sample.Controllers;
+using GOOS_Sample.Interface;
 using GOOS_Sample.Models.ViewModels;
+using GOOS_Sample.Service;
+using GOOS_SampleTests.Steps.Common;
 using System;
 using System.Linq;
 using System.Web.Mvc;
@@ -17,7 +21,7 @@ namespace GOOS_SampleTests.Steps
         [BeforeScenario()]
         public void BeforeScenario()
         {
-            this._budgetController = new BudgetController();
+            this._budgetController = new BudgetController(Hooks.Container.Resolve<IBudgetService>());            
         }
 
         [When(@"add a budget")]

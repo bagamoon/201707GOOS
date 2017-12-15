@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Autofac;
+using Autofac.Integration.Mvc;
+using GOOS_Sample.Controllers;
+using GOOS_Sample.Interface;
+using GOOS_Sample.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,6 +21,13 @@ namespace GOOS_Sample
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            
+            ContainerBuilder builder = new ContainerBuilder();
+            builder.RegisterControllers(typeof(BudgetController).Assembly);
+            builder.RegisterType<BudgetService>().As<IBudgetService>();
+            var container = builder.Build();
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+
         }
     }
 }

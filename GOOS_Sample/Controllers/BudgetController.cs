@@ -13,16 +13,11 @@ namespace GOOS_Sample.Controllers
 {
     public class BudgetController : Controller
     {
-        private IBudgetService budgetServiceStub;
-
-        public BudgetController()
-        {
-            this.budgetServiceStub = new BudgetService();
-        }
+        private IBudgetService budgetService;   
 
         public BudgetController(IBudgetService budgetServiceStub)
         {
-            this.budgetServiceStub = budgetServiceStub;
+            this.budgetService = budgetServiceStub;
         }
 
         public ActionResult Add()
@@ -32,7 +27,7 @@ namespace GOOS_Sample.Controllers
         [HttpPost]
         public ActionResult Add(BudgetAddViewModel model)
         {
-            this.budgetServiceStub.Create(model);
+            this.budgetService.Create(model);
             ViewBag.Message = "added successfully";
             return View(model);
         }
