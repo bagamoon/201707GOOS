@@ -14,13 +14,30 @@ namespace GOOS_SampleTests.Steps.Common
 
         [BeforeFeature()]
         [Scope(Tag = "web")]
-        public static void SetBrowser()
+        public static void BeforeFeature()
         {
             SeleniumWebDriver.Bootstrap(SeleniumWebDriver.Browser.Chrome);
         }
 
+        [AfterFeature()]
+        public static void AfterFeature()
+        {
+            
+        }
+
         [BeforeScenario]
         public void BeforeScenario()
+        {
+            CleanTableByTags();
+        }
+
+        [AfterScenario]
+        public void AfterScenario()
+        {
+            CleanTableByTags();
+        }
+
+        private static void CleanTableByTags()
         {
             var tags = ScenarioContext.Current.ScenarioInfo.Tags
                 .Where(x => x.StartsWith("Clean"))
@@ -37,13 +54,6 @@ namespace GOOS_SampleTests.Steps.Common
                 }
                 dbcontext.SaveChangesAsync();
             }
-
-        }
-
-        [AfterScenario]
-        public void AfterScenario()
-        {
-            //TODO: implement logic that has to run after executing each scenario
         }
     }
 }
